@@ -13,3 +13,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2018-12-08
 ### Added
 - First release
+- Migrate Gpio Handler from relay-domapic-module, in order to allow the reusability in other Domapic Modules.
+- Add "rememberLastStatus" option

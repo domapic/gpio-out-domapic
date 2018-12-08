@@ -48,16 +48,16 @@ test.describe('Gpio Handler', () => {
     test.expect(gpioHandler._defaultInitialStatus).to.equal(true)
   })
 
-  test.it('should set default rememberLastState as false if option is not received', () => {
+  test.it('should set default rememberLastStatus as false if option is not received', () => {
     gpioHandler = new GpioHandler(domapicMocks.stubs.module)
-    test.expect(gpioHandler._defaultRememberLastState).to.equal(false)
+    test.expect(gpioHandler._defaultRememberLastStatus).to.equal(false)
   })
 
-  test.it('should set default rememberLastState if option is received', () => {
+  test.it('should set default rememberLastStatus if option is received', () => {
     gpioHandler = new GpioHandler(domapicMocks.stubs.module, {
-      rememberLastState: true
+      rememberLastStatus: true
     }, {})
-    test.expect(gpioHandler._defaultRememberLastState).to.equal(true)
+    test.expect(gpioHandler._defaultRememberLastStatus).to.equal(true)
   })
 
   test.it('should set default invert as false if option is not received', () => {
@@ -122,14 +122,14 @@ test.describe('Gpio Handler', () => {
         })
       })
 
-      test.describe('when has a rememberLastState configuration key defined', () => {
-        test.it('should set the rememberLastState option from config, getting it from defined rememberLastState key', async () => {
+      test.describe('when has a rememberLastStatus configuration key defined', () => {
+        test.it('should set the rememberLastStatus option from config, getting it from defined rememberLastStatus key', async () => {
           const fooValue = false
           const key = 'fooLasStateKey'
           domapicMocks.stubs.module.config.get.resolves(fooValue)
           gpioHandler = new GpioHandler(domapicMocks.stubs.module, {
           }, {
-            rememberLastState: key
+            rememberLastStatus: key
           })
           await gpioHandler.init()
           test.expect(domapicMocks.stubs.module.config.get).to.have.been.calledWith(key)
@@ -142,7 +142,7 @@ test.describe('Gpio Handler', () => {
           domapicMocks.stubs.module.storage.get.resolves(fooStatus)
           const initialStatusKey = 'fooStatusKey'
           gpioHandler = new GpioHandler(domapicMocks.stubs.module, {
-            rememberLastState: true
+            rememberLastStatus: true
           }, {
             initialStatus: initialStatusKey
           })
@@ -156,7 +156,7 @@ test.describe('Gpio Handler', () => {
           domapicMocks.stubs.module.storage.get.rejects(new Error())
           domapicMocks.stubs.module.config.get.resolves(fooStatus)
           gpioHandler = new GpioHandler(domapicMocks.stubs.module, {
-            rememberLastState: true
+            rememberLastStatus: true
           })
           await gpioHandler.init()
           test.expect(gpioMocks.stubs.Constructor.getCall(0).args[1]).to.equal(fooStatus)
@@ -166,7 +166,7 @@ test.describe('Gpio Handler', () => {
       test.describe('when rememberLastSate option is false', () => {
         test.it('should not set the initial status from storage', async () => {
           gpioHandler = new GpioHandler(domapicMocks.stubs.module, {
-            rememberLastState: false,
+            rememberLastStatus: false,
             initialStatus: true
           })
           await gpioHandler.init()
@@ -208,19 +208,19 @@ test.describe('Gpio Handler', () => {
         test.expect(gpioMocks.stubs.instance.status).to.equal(fooStatus)
       })
 
-      test.describe('when rememberLastState is true', () => {
+      test.describe('when rememberLastStatus is true', () => {
         test.it('should save status to storage', async () => {
           const fooStatus = 'foo-status'
-          gpioHandler._rememberLastState = true
+          gpioHandler._rememberLastStatus = true
           await gpioHandler.setStatus(fooStatus)
           test.expect(domapicMocks.stubs.module.storage.set.getCall(0).args[1]).to.equal(fooStatus)
         })
       })
 
-      test.describe('when rememberLastState is false', () => {
+      test.describe('when rememberLastStatus is false', () => {
         test.it('should not save status to storage', async () => {
           const fooStatus = 'foo-status'
-          gpioHandler._rememberLastState = false
+          gpioHandler._rememberLastStatus = false
           await gpioHandler.setStatus(fooStatus)
           test.expect(domapicMocks.stubs.module.storage.set).to.not.have.been.called()
         })
